@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rj.dao.SysUserDao">
+    <insert id="add">
+        <selectKey keyProperty="userId" keyColumn="user_id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID();
+        </selectKey>
+      insert into sys_user
+      (user_id, username, password, email, mobile, status, create_user_id, create_time, dept_id, sex, lockdate)
+      values
+      (#{userId}, #{username}, #{password}, #{email}, #{mobile}, #{status}, #{createUserId}, #{createTime}, #{deptId}, #{sex}, #{lockdate})
+    </insert>
+    <delete id="deleteByUserId">
+        delete from sys_user where user_id=#{userId}
+    </delete>
+
+    <select id="findByUsername" resultType="com.rj.pojo.SysUser">
+        select * from sys_user where username like #{username}
+    </select>
+    <select id="findAll" resultType="com.rj.pojo.SysUser">
+        select * from sys_user
+    </select>
+</mapper>
