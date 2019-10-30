@@ -15,4 +15,6 @@ public interface MenuDao {
     List<Integer> findMenuIdsByRoleId(@Param("roleId") Integer roleId);
 
     void deleteByRoleId(@Param("roleId") Integer roleId);
+
+    List<Menu> findBySysUserId2(@Param("userId") Integer userId);
 }

@@ -70,7 +70,8 @@ public class SysUserController {
         String username = (String) SecurityUtils.getSubject().getPrincipal();
         SysUser sysUser = sysUserService.findByUsername(username);
         //主菜单和子菜单集合
-        List<Menu> menuList = menuService.findBySysUserId(sysUser.getUserId());
+        //List<Menu> menuList = menuService.findBySysUserId(sysUser.getUserId());
+        List<Menu> menuList = menuService.findBySysUserId2(sysUser.getUserId());
         //权限集合
         Set<String> perms = permService.perms(sysUser.getUserId());
         return R.ok().put("menuList", menuList).put("permissions", perms);

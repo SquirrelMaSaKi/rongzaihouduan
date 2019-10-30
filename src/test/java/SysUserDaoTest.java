@@ -20,6 +20,7 @@ public class SysUserDaoTest {
     @Autowired
     private SysUserVo_AddDao sysUserVo_addDao;
 
+
     @Test
     public void testFindByUsername() {
         SysUser sysUser = sysUserDao.findByUsername("admin");

@@ -43,4 +43,9 @@ public class MenuServiceImpl implements MenuService {
         PageInfo<Menu> pageInfo = PageInfo.of(list);
         return pageInfo;
     }
+
+    @Override
+    public List<Menu> findBySysUserId2(Integer userId) {
+        return menuDao.findBySysUserId2(userId);
+    }
 }

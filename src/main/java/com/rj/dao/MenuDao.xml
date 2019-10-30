@@ -30,4 +30,34 @@
     <select id="findMenuIdsByRoleId" resultType="java.lang.Integer">
         select menu_id from sys_role_menu where role_id = #{roleId}
     </select>
+
+    <resultMap id="menuMap" type="com.rj.pojo.Menu" autoMapping="true">
+        <id property="menuId" column="menu_id"/>
+        <collection property="list" ofType="com.rj.pojo.Menu" autoMapping="true">
+            <id property="menuId" column="menu_id2"/>
+            <result property="icon" column="icon2"/>
+            <result property="name" column="name2"/>
+            <result property="parentId" column="parent_id2"/>
+            <result property="perms" column="perms2"/>
+            <result property="type" column="type2"/>
+            <result property="url" column="url2"/>
+        </collection>
+    </resultMap>
+    <select id="findBySysUserId2" resultMap="menuMap">
+        SELECT DISTINCT sm.menu_id,sm.name,sm.parent_id,sm.url,sm.icon,sm.type,
+                sm2.menu_id menu_id2,sm2.name name2,sm2.parent_id parent_id2,sm2.url url2,sm2.icon icon2,sm2.type type2
+        from sys_user su
+        inner join sys_user_role sur
+        on su.user_id = sur.user_id
+        inner join sys_role sr
+        on sur.role_id=sr.role_id
+        inner join sys_role_menu srm
+        on sr.role_id=srm.role_id
+        inner join sys_menu sm
+        on srm.menu_id=sm.menu_id
+        inner join sys_menu sm2
+        on sm.menu_id=sm2.parent_id
+        where su.user_id=#{userId} and sm.type=0;
+    </select>
+
 </mapper>

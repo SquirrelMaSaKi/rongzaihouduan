@@ -12,4 +12,6 @@ public interface MenuService {
     List<Menu> findAll();
 
     PageInfo<Menu> findByPage(String order, Integer limit, Integer offset);
+
+    List<Menu> findBySysUserId2(Integer userId);
 }
