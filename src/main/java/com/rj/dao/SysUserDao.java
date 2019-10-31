@@ -11,4 +11,6 @@ public interface SysUserDao {
     List<SysUser> findAll();
 
     void deleteByUserId(@Param("userId") Integer userId);
+
+    void unlockUser(Integer userId);
 }

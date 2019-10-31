@@ -1,0 +1,103 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+<!--
+<!DOCTYPE log4j:configuration PUBLIC "-//LOGGER"
+        "http://logging.apache.org/log4j/1.2/org/apache/log4j/xml/log4j.dtd">
+
+<log4j:configuration>
+-->
+<!DOCTYPE log4j:configuration PUBLIC "-//LOGGER"
+        "http://org/apache/log4j/xml/log4j.dtd">
+<log4j:configuration>
+    <!--若干个appender的定义-->
+    <!--org.apache.log4j.ConsoleAppender 输出到控制台-->
+    <appender name="myConsole" class="org.apache.log4j.ConsoleAppender">
+        <!--输出格式-->
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%-d{yyyy-MM-dd HH:mm:ss,SSS} [%c]-[%p] %m%n"/>
+        </layout>
+        <!--过滤器设置输出的级别 all trace debug info warn error fatal off
+            log.trace("haha");
+            log.error("hehe");
+            log.debug("gg");
+        -->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="debug" />
+            <param name="levelMax" value="warn" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+
+    <!--org.apache.log4j.DailyRollingFileAppender 每天产生一个日志文件
+        output2.log=项目根目录下的output2.log(web环境不适用)
+        d:\output1000.log=对应的磁盘位置
+        output1000.log.2019-10-31
+        output1000.log
+    -->
+    <!--
+    %p 输出优先级，即DEBUG，INFO，WARN，ERROR，FATAL
+     %r 输出自应用启动到输出该log信息耗费的毫秒数
+     %c 输出所属的类目，通常就是所在类的全名
+     %t 输出产生该日志事件的线程名
+     %n 输出一个回车换行符，Windows平台为“/r/n”，Unix平台为“/n”
+     %d 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式，比如：%d{yyy MMM dd HH:mm:ss,SSS}，输出类似：2002年10月18日 22：10：28，921
+     %l 输出日志事件的发生位置，包括类目名、发生的线程，以及在代码中的行数。举例：Testlo4.main(TestLog4.java:10)
+    -->
+
+    <appender name="myFile" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="D:/Java/ProjectJ/myLog/myLogDebug.log"/><!--文件位置-->
+        <param name="Append" value="true"/><!--是否选择追加-->
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%-d{yyyy-MM-dd HH:mm:ss,SSS} [%c]-[%p] %m%n"/>
+        </layout>
+    </appender>
+
+    <!--org.apache.log4j.RollingFileAppender 滚动日志文件输出
+        文件大小到达 （kb、mb） 一定尺寸时重新产生新的文件
+        除日志文件本身之外，最多额外产生两个新文件，当达到2个后，
+        如果日志文件又达到1mb，则会在第一个新文件中覆盖写入。然后再需要就是第二个新文件中覆盖写入。
+        所以此种需要顾及好大小和个数，否则会有日志覆盖。
+    -->
+    <appender name="myFile2" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="D:/Java/ProjectJ/myLog/myLogInfo.log" />
+        <param name="Append" value="true" />
+        <param name="MaxFileSize" value="1mb"/>
+        <param name="MaxBackupIndex" value="2" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%p (%c:%L)- %m%n" />
+        </layout>
+    </appender>
+
+    <!--将各个包日志、类日志 输出到不同的日志文件中
+        这样可以便于日志的分类。
+    -->
+    <!-- org.springframework包下的日志最低输出优先级为info，由myFile输出 -->
+    <category name="org.springframework">
+        <!-- 当前包下的日志不在父日志中输出，即不再在root中定义的各个appender中输出 -->
+        <param name="additivity" value="false"/>
+        <priority value="info"/>
+        <appender-ref ref="myFile2"/>
+    </category>
+    <category name="com.alibaba.druid.pool.DruidDataSource">
+        <priority value="warn"/>
+        <appender-ref ref="myConsole"/>
+    </category>
+
+
+    <!-- 根logger的设置-->
+    <root>
+        <!--优先级设置，假设设置为“info”，则无法输出debug级别的日志-->
+        <priority value="debug"/>
+        <!--<priority value="info"/>-->
+        <!--<priority value="warn"/>-->
+        <!--<priority value="error"/>-->
+        <!--<priority value="fatal"/>-->
+
+        <!-- 添加刚才设置的appender -->
+        <!-- 所有没有单独设置的日志位置会在如下注册的appender中输出 -->
+        <appender-ref ref="myConsole"/>
+        <appender-ref ref="myFile"/>
+        <appender-ref ref="myFile2"/>
+    </root>
+</log4j:configuration>

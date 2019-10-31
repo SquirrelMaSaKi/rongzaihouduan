@@ -89,6 +89,14 @@
     <!--支持@AspectJ的aop注解方式，打开开关-->
     <aop:aspectj-autoproxy/>
 
+    <!-- 动态设置调度器，并将Trigger注册到调度器中 -->
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <!-- 添加 quartz 配置，如下两种方式均可 -->
+        <!--<property name="configLocation" value="classpath:quartz.properties"></property>-->
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="dataSource" ref="druid"/>
+    </bean>
+
     <!--管理shiro_applicationContext.xml文件-->
     <import resource="classpath:shiro_bean.xml"/>
     <!--管理redis_applicationContext.xml文件-->

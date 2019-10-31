@@ -52,4 +52,14 @@ public class SysUserServiceImpl implements SysUserService {
         sysUserDao.deleteByUserId(userId);
     }
 
+    @Override
+    public List<SysUser> querySysUsers() {
+        return sysUserDao.findAll();
+    }
+
+    @Override
+    public void unlockUser(Integer userId) {
+        sysUserDao.unlockUser(userId);
+    }
+
 }
